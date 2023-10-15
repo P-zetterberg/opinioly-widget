@@ -1,0 +1,14 @@
+ /* .title {
+    color:red;
+}
+:host(.title) {
+    color: green;
+} */
+
+/* op-widget#kek {
+    --color:yellow;
+}  */
+
+op-widget#kek::part(subheader) {
+    color: chocolate;
+}

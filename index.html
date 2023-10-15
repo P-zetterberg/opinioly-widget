@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./src/test.css">
+    <title>Document</title>
+    <script async src="/dist/widget.js"></script>
+    <script>
+          function openWidget() {
+            document.querySelector("#kek").changeColor('TEST')
+        }
+    </script>
+</head>
+
+<body>
+    <h1 class="title">TEST PZ WIDGET</h1>
+    <button onclick="openWidget()">Press</button>
+    <op-widget id='kek'
+     options='{
+        "msg": "test",
+        "test": 123123123
+    }'
+     style=" --color: #636eca;">
+    </op-widget>
+    <h1>kekekekeke</h1>
+
+
+</body>
+</html>

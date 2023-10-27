@@ -17,6 +17,7 @@ export default defineConfig({
     svelte({
       compilerOptions: {
         customElement: true,
+        cssHash: ({ hash, css }) => `o-${hash(css)}`,
       },
     }),
   ],

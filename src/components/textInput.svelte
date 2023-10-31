@@ -1,11 +1,40 @@
 <script>
+  import { validationStatus, addKeyValuePair } from "../validationStore"
+
+  let notValid = false
+  let value = ""
+
   export let label = ""
   export let placeholder = ""
+  export let required = false
+  export let i
+
+  function handleInput(event) {
+    if (!required) return
+    value = event.target.value
+    notValid = value.length === 0
+    addKeyValuePair(i, notValid)
+  }
+
+  function handleBlur() {
+    if (!required) return
+    notValid = value.length === 0
+    addKeyValuePair(i, notValid)
+  }
 </script>
 
 <div class="input__container">
   <label for="name">{label}</label>
-  <input class="form__element" type="text" name="name" {placeholder} />
+  <input
+    on:blur={handleBlur}
+    on:input={handleInput}
+    class="form__element {notValid ? 'error' : ''}"
+    type="text"
+    name="name"
+    bind:value
+    placeholder={notValid ? "Required" : placeholder}
+    {required}
+  />
 </div>
 
 <style lang="scss">
@@ -31,9 +60,20 @@
     height: 45px;
     padding: 5px;
     transition: border-color ease-in 150ms;
+    border-radius: var(--border-radius);
+    font-size: 14px;
+
+    &.error {
+      border-left: 5px solid var(--error);
+      color: var(--error);
+
+      &::placeholder {
+        opacity: 1;
+      }
+    }
   }
   input:focus {
-    border: 1px solid black;
+    border: 1px solid rgba(0, 0, 0, 0.5);
     outline: transparent;
   }
 </style>

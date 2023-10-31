@@ -12,9 +12,11 @@
     "@sveltejs/vite-plugin-svelte": "^2.4.2",
     "sass": "^1.69.4",
     "svelte": "^4.0.5",
+    "svelte-outclick": "^3.6.2",
     "vite": "^4.4.5"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.38.1"
+    "@supabase/supabase-js": "^2.38.1",
+    "color-convert": "^2.0.1"
   }
 }

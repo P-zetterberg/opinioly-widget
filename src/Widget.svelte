@@ -5,6 +5,7 @@
   import { supabase } from "./store."
   import ComponentRenderer from "./componentRenderer.svelte"
   import Loading from "./components/loading.svelte"
+  import { allValuesAreTrue, addKeyValuePair } from "./validationStore"
 
   export let widgetId
 
@@ -20,7 +21,11 @@
     wData = widget.data.data
     loading = false
     buttonText = widget?.data?.buttonText
+    wData.forEach((item, i) => {
+      if (item.type !== "description") addKeyValuePair(i, item.required)
+    })
   }
+
   onMount(async () => {
     getData(widgetId)
   })
@@ -44,10 +49,20 @@
       <div class="content" style={loading ? "justify-content:center;" : ""}>
         {#if !loading}
           <!-- Värt att göra spread här? om fler? -->
-          {#each wData as { type, msg, label, placeholder }}
-            <ComponentRenderer {type} {msg} {label} {placeholder} />
+          {#each wData as { type, msg, label, placeholder, options, required }, i}
+            <ComponentRenderer
+              {type}
+              {msg}
+              {label}
+              {placeholder}
+              {options}
+              {required}
+              {i}
+            />
           {/each}
-          <button class="submit">{buttonText ?? "Submit"}</button>
+          <button disabled={$allValuesAreTrue} class="submit"
+            >{buttonText ?? "Submit"}</button
+          >
         {:else}
           <Loading />
         {/if}
@@ -63,21 +78,16 @@
 <style lang="scss">
   @use "./global.scss";
 
-  * {
-    box-sizing: border-box;
-    font-family: "Poppins", sans-serif;
-  }
-  :host {
-    --width: 400px;
-    --primary: rgb(194, 235, 209);
-    --primary-text: black;
-  }
+  // * {
+  //   box-sizing: border-box;
+  //   font-family: "Poppins", sans-serif;
+  // }
   .top-section {
     text-align: center;
     height: 75px;
     width: var(--width);
     padding: 1em;
-    background-color: var(--primary, black);
+    background-color: var(--primary-color, black);
   }
   .content-container {
     overflow: scroll;
@@ -89,6 +99,7 @@
   .content {
     padding: 1em;
     height: 100%;
+    max-height: 400px;
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -101,16 +112,15 @@
   }
 
   main {
-    z-index: 2147483000;
+    --_width: 400px;
+    z-index: 57678965;
     position: fixed;
-    bottom: 84px;
-    right: 20px;
+    inset: var(--top, auto) var(--right, auto) var(--bottom, auto)
+      var(--left, auto);
     transform-origin: right bottom 0px;
-    height: min(500px, 100% - 100px);
     min-height: 80px;
-    width: var(--width);
+    width: var(--_width);
     max-height: 500px;
-    /* border-radius: 16px; */
     overflow: hidden;
     box-shadow: rgba(0, 0, 0, 0.16) 0px 5px 40px;
     background-color: #f3f4f6;
@@ -128,15 +138,20 @@
     max-height: 0;
     pointer-events: none;
   }
+  .open {
+    border-radius: var(--frame-radius);
+  }
   .branding-bar {
+    --_width: 400px;
     all: unset;
-    position: absolute;
     height: 25px;
     color: rgb(197, 197, 197);
     cursor: pointer;
-    width: var(--width);
+    width: var(--_width);
     text-align: center;
     margin-top: 4px;
+    display: block;
+    transition: background-color ease-in-out 150ms;
   }
 
   .branding-bar:hover {
@@ -152,10 +167,11 @@
     height: 25px;
     min-width: 25px;
     width: fit-content;
-    bottom: 20px;
-    right: 20px;
-    background-color: var(--primary, black);
-    color: var(--primary-text, white);
+    inset: var(--toggle-top, auto) var(--toggle-right, auto)
+      var(--toggle-bottom, auto) var(--toggle-left, auto);
+    background-color: var(--toggle-background, black);
+    border-radius: var(--border-radius);
+    color: var(--toggle-text, white);
     z-index: 2147483000;
     padding: 0.5em;
     line-height: 1;
@@ -171,9 +187,10 @@
   .submit {
     all: unset;
     width: 100%;
-    color: var(--button-primary-text);
-    background-color: var(--button-primary);
+    color: var(--primary-button-text, white);
+    background-color: var(--primary-button, black);
     height: 45px;
+    border-radius: var(--border-radius);
     text-transform: uppercase;
     letter-spacing: 0.2em;
     font-weight: 600;
@@ -183,8 +200,13 @@
     min-height: 45px;
     box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 10px;
     &:hover {
-      background-color: var(--button-primary);
+      background-color: var(--primary-button, black);
       opacity: 0.8;
+    }
+    &:disabled {
+      background-color: var(--primary-button, black);
+      opacity: 0.3;
+      cursor: not-allowed;
     }
   }
   @media only screen and (max-width: 400px) {

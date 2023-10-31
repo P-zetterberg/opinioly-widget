@@ -1,19 +1,46 @@
 <script>
+  import { validationStatus, addKeyValuePair } from "../validationStore"
+
+  let notValid = false
+  let value = ""
+
   export let label = ""
-  let t = ""
-  $: l = 250 - t.length
+  export let placeholder = ""
+  export let required = false
+  export let i
+
+  $: l = 250 - value.length
+
+  function handleInput(event) {
+    if (!required) return
+    value = event.target.value
+    notValid = value.length === 0
+    addKeyValuePair(i, notValid)
+  }
+  //
+  function handleBlur() {
+    if (!required) return
+    notValid = value.length === 0
+    addKeyValuePair(i, notValid)
+  }
 </script>
 
 <div class="input__container">
-  <label for="feedback">{label ?? "Feedback"}</label>
+  <div class="flex">
+    <label for="feedback">{label ?? "Feedback"}</label>
+    <span class="max__length">{l}</span>
+  </div>
   <textarea
+    {required}
+    on:blur={handleBlur}
+    on:input={handleInput}
+    placeholder={notValid ? "Required" : placeholder}
     maxlength="250"
-    bind:value={t}
+    bind:value
     spellcheck="false"
     name="feedback"
-    class="form__element"
+    class="form__element {notValid ? 'error' : ''}"
   />
-  <span class="max__length">{l}</span>
 </div>
 
 <style lang="scss">
@@ -32,16 +59,24 @@
   }
   .form__element {
     border: 1px solid;
-    border-radius: 0px;
+    border-radius: var(--border-radius);
     border-color: lightgrey;
     background: #ffffff;
     height: 45px;
     padding: 5px;
     transition: border-color ease-in 150ms;
+    &.error {
+      border-left: 5px solid var(--error);
+      color: var(--error);
+
+      &::placeholder {
+        opacity: 1;
+      }
+    }
   }
   textarea {
     border: none;
-    border-radius: 5px;
+    border-radius: var(--border-radius);
     width: 100%;
     resize: vertical;
     min-height: 100px;
@@ -50,10 +85,14 @@
   }
   textarea:focus {
     outline: transparent;
-    border: 1px solid black;
+    border: 1px solid rgba(0, 0, 0, 0.5);
   }
   .max__length {
     align-self: flex-end;
     color: rgba(0, 0, 0, 0.5);
+  }
+  .flex {
+    display: flex;
+    justify-content: space-between;
   }
 </style>

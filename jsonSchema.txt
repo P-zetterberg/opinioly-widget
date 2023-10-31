@@ -1,0 +1,31 @@
+{
+  "data": [
+    {
+      "msg": "Vi på x AB värnar om våra kunder. feedback hjälper oss göra det ännu bättre!",
+      "type": "description"
+    },
+    {
+      "type": "dropdown",
+      "label": "Feedback category",
+      "required": true,
+      "options": [
+        "Design",
+        "Experience",
+        "Products",
+        "Other"
+      ]
+    },
+    {
+      "type": "textinput",
+      "label": "Name",
+      "placeholder": "Enter your name",
+      "required": false
+    },
+    {
+      "type": "textarea",
+      "label": "Feedback",
+      "required": true
+    }
+  ],
+  "buttonText": "Submit"
+}

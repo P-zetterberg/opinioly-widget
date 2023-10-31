@@ -10,7 +10,7 @@ export default defineConfig({
       entry: resolve(__dirname, "src/main.js"),
       name: "MyLib",
       fileName: "widget",
-      // formats: ["iife"],
+      formats: ["iife"],
     },
   },
   plugins: [

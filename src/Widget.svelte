@@ -125,7 +125,7 @@
     box-shadow: rgba(0, 0, 0, 0.16) 0px 5px 40px;
     background-color: #f3f4f6;
     opacity: 1;
-    transition: width 200ms ease 0s, height 200ms ease 0s,
+    transition: width 200ms ease 0s, height 200ms ease 200ms,
       max-height 200ms ease 0s, transform 300ms cubic-bezier(0, 1.2, 1, 1) 0s,
       opacity 83ms ease-out 0s;
     pointer-events: all;
@@ -199,14 +199,18 @@
     text-align: center;
     min-height: 45px;
     box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 10px;
+    transition: scale ease-in 150ms;
     &:hover {
       background-color: var(--primary-button, black);
-      opacity: 0.8;
+      opacity: 0.85;
     }
     &:disabled {
       background-color: var(--primary-button, black);
       opacity: 0.3;
       cursor: not-allowed;
+    }
+    &:active:not(:disabled) {
+      scale: 1.02;
     }
   }
   @media only screen and (max-width: 400px) {

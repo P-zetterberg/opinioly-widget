@@ -15,7 +15,16 @@
   function handleBlur(e) {
     if (e.relatedTarget?.tagName.toLowerCase() == "li") {
       e.preventDefault()
-    } else isOpen = false
+    } else {
+      if (required && !selectedOption) {
+        notValid = true
+        label = "Required"
+      } else {
+        notValid = false
+        label = "Feedback category"
+      }
+      isOpen = false
+    }
   }
   function toggleDropdown() {
     if (required && isOpen && !selectedOption) {

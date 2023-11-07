@@ -1,9 +1,9 @@
-import { writable, readable } from "svelte/store"
-import { createClient } from "@supabase/supabase-js"
+// import { writable, readable } from "svelte/store"
+// import { createClient } from "@supabase/supabase-js"
 
-const supabaseUrl = "https://foebhsyjevotvveomyop.supabase.co"
-const supabaseKey = import.meta.env.VITE_SUPABASE_KEY
-export const supabase = createClient(supabaseUrl, supabaseKey)
+// const supabaseUrl = "https://foebhsyjevotvveomyop.supabase.co"
+// const supabaseKey = import.meta.env.VITE_SUPABASE_KEY
+// export const supabase = createClient(supabaseUrl, supabaseKey)
 
 //signUp()
 // await signInWithEmail()

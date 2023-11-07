@@ -1,5 +1,6 @@
 <script>
   import { validationStatus, addKeyValuePair } from "../validationStore"
+  import { updateData } from "../stores/widgetDataStore"
 
   let selectedOption = null
   let isOpen = false
@@ -11,6 +12,7 @@
   export let i
 
   $: if (selectedOption !== null) addKeyValuePair(i, notValid)
+  $: updateData("dropdown", { selectedOption, label })
 
   function handleBlur(e) {
     if (e.relatedTarget?.tagName.toLowerCase() == "li") {

@@ -2,10 +2,11 @@
 
 <script>
   import { onMount } from "svelte"
-  import { supabase } from "./store."
+  // import { supabase } from "./supabaseStore."
   import ComponentRenderer from "./componentRenderer.svelte"
   import Loading from "./components/loading.svelte"
-  import { allValuesAreTrue, addKeyValuePair } from "./validationStore"
+  import { addKeyValuePair } from "./validationStore"
+  import Submit from "./components/button.svelte"
 
   export let widgetId
 
@@ -18,7 +19,7 @@
   async function getData(id) {
     const res = await fetch(`http://localhost:3000/widget/get?id=${id}`)
     widget = await res.json()
-    wData = widget.data.data
+    wData = JSON.parse(widget.data).data
     loading = false
     buttonText = widget?.data?.buttonText
     wData.forEach((item, i) => {
@@ -60,9 +61,7 @@
               {i}
             />
           {/each}
-          <button disabled={$allValuesAreTrue} class="submit"
-            >{buttonText ?? "Submit"}</button
-          >
+          <Submit {buttonText} {widgetId} />
         {:else}
           <Loading />
         {/if}
@@ -184,35 +183,7 @@
     // background-color: rgba(0, 0, 0, 0.8);
     scale: 1.1;
   }
-  .submit {
-    all: unset;
-    width: 100%;
-    color: var(--primary-button-text, white);
-    background-color: var(--primary-button, black);
-    height: 45px;
-    border-radius: var(--border-radius);
-    text-transform: uppercase;
-    letter-spacing: 0.2em;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color ease-in 150ms, opacity ease-in 150ms;
-    text-align: center;
-    min-height: 45px;
-    box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 10px;
-    transition: scale ease-in 150ms;
-    &:hover {
-      background-color: var(--primary-button, black);
-      opacity: 0.85;
-    }
-    &:disabled {
-      background-color: var(--primary-button, black);
-      opacity: 0.3;
-      cursor: not-allowed;
-    }
-    &:active:not(:disabled) {
-      scale: 1.02;
-    }
-  }
+
   @media only screen and (max-width: 400px) {
     :host {
       --width: 100vw;

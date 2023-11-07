@@ -14,6 +14,7 @@
     position: relative;
     transform: translateZ(0);
     animation: mltShdSpin 1.7s infinite ease, round 1.7s infinite ease;
+    margin: 1em;
   }
 
   @keyframes mltShdSpin {

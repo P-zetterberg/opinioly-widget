@@ -1,8 +1,10 @@
 <script>
   import { validationStatus, addKeyValuePair } from "../validationStore"
+  import { updateData } from "../stores/widgetDataStore"
 
   let notValid = false
   let value = ""
+  $: updateData("textinput", { value, label })
 
   export let label = ""
   export let placeholder = ""

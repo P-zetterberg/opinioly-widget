@@ -4,12 +4,10 @@ import { resolve } from "path"
 
 export default defineConfig({
   build: {
-    sourcemap: true,
-    target: "modules",
     lib: {
       entry: resolve(__dirname, "src/main.js"),
-      name: "MyLib",
-      fileName: "widget",
+      name: "Opinioly",
+      fileName: "opinioly",
       formats: ["iife"],
     },
   },

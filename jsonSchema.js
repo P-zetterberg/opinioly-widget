@@ -6,7 +6,7 @@ let json = {
     },
     {
       type: "dropdown",
-      label: "Feedback category",
+      label: "Feedback category12",
       options: ["Design", "Experience", "Products", "Other"],
       required: true,
     },
@@ -24,3 +24,4 @@ let json = {
   ],
   buttonText: "Submit",
 }
+export default json

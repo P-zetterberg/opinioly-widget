@@ -4,8 +4,10 @@
 
   export let buttonText
   export let widgetId
+  export let type
 
   function postData() {
+    if (type === "web") return
     const url = "http://localhost:3000/widget/feedback/new"
     const data = {
       widgetId: widgetId,

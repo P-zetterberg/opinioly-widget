@@ -1,4 +1,4 @@
-<svelte:options customElement="op-widget" />
+<svelte:options customElement="opinioly-widget" />
 
 <script>
   import { onMount } from "svelte"
@@ -7,16 +7,20 @@
   import Loading from "./components/loading.svelte"
   import { addKeyValuePair } from "./validationStore"
   import Submit from "./components/button.svelte"
+  import json from "../jsonSchema.js"
 
   export let widgetId
+  export const webData = json
+  export let type = ""
 
   let widget = {}
   let wData = []
   let toggle = true
-  let loading = true
+  let loading = false
   let buttonText
 
   async function getData(id) {
+    if (type === "web") return
     const res = await fetch(`http://localhost:3000/widget/get?id=${id}`)
     widget = await res.json()
     wData = JSON.parse(widget.data).data
@@ -29,6 +33,11 @@
 
   onMount(async () => {
     getData(widgetId)
+    if (type === "web") {
+      widget = webData
+      wData = webData.data
+      loading = false
+    }
   })
 </script>
 
@@ -42,7 +51,7 @@
 </svelte:head>
 
 <div class="container">
-  <main class={toggle ? "open" : "closed"}>
+  <main class={toggle ? "open" : "closed"} part={type === "web" ? "main" : ""}>
     <div class="top-section">
       <h1 class="title">Give feedback</h1>
     </div>
@@ -61,7 +70,7 @@
               {i}
             />
           {/each}
-          <Submit {buttonText} {widgetId} />
+          <Submit {buttonText} {widgetId} {type} />
         {:else}
           <Loading />
         {/if}

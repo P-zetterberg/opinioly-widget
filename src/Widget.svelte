@@ -7,17 +7,47 @@
   import Loading from "./components/loading.svelte"
   import { addKeyValuePair } from "./validationStore"
   import Submit from "./components/button.svelte"
-  import json from "../jsonSchema.js"
 
   export let widgetId
-  export const webData = json
+  export let webData = JSON.stringify({
+    data: [
+      {
+        msg: "Vi på x AB värnar om våra kunder. feedback hjälper oss göra det ännu bättre!",
+        type: "description",
+      },
+      {
+        type: "dropdown",
+        label: "Feedback category12",
+        options: ["Design", "Experience", "Products", "Other"],
+        required: true,
+      },
+      {
+        type: "textinput",
+        label: "Name",
+        required: false,
+        placeholder: "Enter your name",
+      },
+      {
+        type: "textarea",
+        label: "Feedback",
+        required: false,
+      },
+    ],
+    buttonText: "Submit",
+  })
   export let type = ""
+  export function refreshData(newData, level) {
+    if (level === 2) {
+      wData = JSON.parse(newData).data
+    } else {
+      widget = newData
+    }
+  }
 
   let widget = {}
   let wData = []
   let toggle = true
   let loading = false
-  let buttonText
 
   async function getData(id) {
     if (type === "web") return
@@ -25,7 +55,6 @@
     widget = await res.json()
     wData = JSON.parse(widget.data).data
     loading = false
-    buttonText = widget?.data?.buttonText
     wData.forEach((item, i) => {
       if (item.type !== "description") addKeyValuePair(i, item.required)
     })
@@ -34,9 +63,13 @@
   onMount(async () => {
     getData(widgetId)
     if (type === "web") {
-      widget = webData
-      wData = webData.data
+      let parsedData = JSON.parse(webData)
+      widget = parsedData
+      wData = parsedData.data
       loading = false
+      wData.forEach((item, i) => {
+        if (item.type !== "description") addKeyValuePair(i, item.required)
+      })
     }
   })
 </script>
@@ -70,7 +103,7 @@
               {i}
             />
           {/each}
-          <Submit {buttonText} {widgetId} {type} />
+          <Submit buttonText={widget?.buttonText} {widgetId} {type} />
         {:else}
           <Loading />
         {/if}
@@ -80,7 +113,11 @@
       <p>Powered by Opinioly</p>
     </a>
   </main>
-  <button class="toggle" on:click={() => (toggle = !toggle)}>Feedback</button>
+  <button
+    class="toggle"
+    on:click={type === "web" ? null : () => (toggle = !toggle)}
+    part={type === "web" ? "toggle" : ""}>Feedback</button
+  >
 </div>
 
 <style lang="scss">

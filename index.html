@@ -8,7 +8,8 @@
     <script async src="/dist/opinioly.iife.js"></script>
     <script>
           function openWidget() {
-            document.querySelector("#kek").changeColor()
+            // document.querySelector("opinioly-widget").refreshData()
+            console.log(document.querySelector("opinioly-widget"));
         }
     </script>
 </head>
@@ -18,6 +19,7 @@
     <button onclick="openWidget()">Press</button>
     <opinioly-widget
     widgetId="214a858e-aa49-4165-9bc6-da06c1136755"
+    type="web"
     >
     </opinioly-widget>
     <h1>kekekekeke</h1>

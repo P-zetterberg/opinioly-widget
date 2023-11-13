@@ -1,5 +1,5 @@
 <script>
-  import { validationStatus, addKeyValuePair } from "../validationStore"
+  import { addKeyValuePair } from "../validationStore"
   import { updateData } from "../stores/widgetDataStore"
 
   let hadFocus = false

@@ -1,6 +1,7 @@
 <script>
   import { validationStatus, addKeyValuePair } from "../validationStore"
   import { updateData } from "../stores/widgetDataStore"
+  import { onMount } from "svelte"
 
   let hadFocus = false
   let selectedOption = null
@@ -12,9 +13,16 @@
   export let options = []
   export let i
 
+  let labelCopy
+
   $: if (selectedOption !== null) addKeyValuePair(i, notValid)
   $: updateData("dropdown", { selectedOption, label })
   $: if (hadFocus && !selectOption) notValid = required
+  $: if (!required) {
+    notValid = false
+    if (label == "Required") label = labelCopy
+  }
+
   function handleBlur(e) {
     hadFocus = true
     if (e.relatedTarget?.tagName.toLowerCase() == "li") {
@@ -25,7 +33,7 @@
         label = "Required"
       } else {
         notValid = false
-        label = label
+        label = labelCopy
       }
       isOpen = false
     }
@@ -37,7 +45,7 @@
       label = "Required"
     } else {
       notValid = false
-      label = label
+      label = labelCopy
     }
     isOpen = !isOpen
   }
@@ -46,6 +54,9 @@
     selectedOption = option
     isOpen = false
   }
+  onMount(() => {
+    labelCopy = label
+  })
 </script>
 
 <div class="custom-select">

@@ -5,8 +5,13 @@
   let hadFocus = false
   let notValid = false
   let value = ""
+
   $: updateData("textinput", { value, label })
   $: if (hadFocus) notValid = required
+  $: if (!required) {
+    notValid = false
+  }
+
   export let label = ""
   export let placeholder = ""
   export let required = false

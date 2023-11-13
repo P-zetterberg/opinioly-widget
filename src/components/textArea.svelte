@@ -12,6 +12,10 @@
 
   $: l = 250 - value.length
   $: if (hadFocus) notValid = required
+  $: if (!required) {
+    notValid = false
+  }
+
   function handleInput(event) {
     if (!required) return
     value = event.target.value

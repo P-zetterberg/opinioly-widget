@@ -10,6 +10,7 @@
   $: if (hadFocus) notValid = required
   $: if (!required) {
     notValid = false
+    hadFocus = false
   }
 
   export let label = ""

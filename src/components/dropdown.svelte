@@ -1,26 +1,24 @@
 <script>
   import { validationStatus, addKeyValuePair } from "../validationStore"
   import { updateData } from "../stores/widgetDataStore"
-  import { onMount } from "svelte"
 
   let hadFocus = false
   let selectedOption = null
   let isOpen = false
   let notValid = false
+  let validationLabel = null
 
   export let label = ""
   export let required = false
   export let options = []
   export let i
 
-  let labelCopy
-
   $: if (selectedOption !== null) addKeyValuePair(i, notValid)
   $: updateData("dropdown", { selectedOption, label })
   $: if (hadFocus && !selectOption) notValid = required
   $: if (!required) {
     notValid = false
-    if (label == "Required") label = labelCopy
+    validationLabel = null
   }
 
   function handleBlur(e) {
@@ -30,10 +28,10 @@
     } else {
       if (required && !selectedOption) {
         notValid = true
-        label = "Required"
+        validationLabel = "Required *"
       } else {
         notValid = false
-        label = labelCopy
+        validationLabel = null
       }
       isOpen = false
     }
@@ -42,10 +40,10 @@
     hadFocus = true
     if (required && isOpen && !selectedOption) {
       notValid = true
-      label = "Required"
+      validationLabel = "Required *"
     } else {
       notValid = false
-      label = labelCopy
+      validationLabel = null
     }
     isOpen = !isOpen
   }
@@ -54,9 +52,6 @@
     selectedOption = option
     isOpen = false
   }
-  onMount(() => {
-    labelCopy = label
-  })
 </script>
 
 <div class="custom-select">
@@ -68,8 +63,7 @@
     on:keypress={toggleDropdown}
     on:blur={handleBlur}
   >
-    {selectedOption || label}
-    {required ? "*" : ""}
+    {selectedOption || validationLabel || `${label}${required ? " *" : ""}`}
     <span class="arrow">{isOpen ? "▲" : "▼"}</span>
   </div>
 

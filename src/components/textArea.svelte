@@ -14,6 +14,7 @@
   $: if (hadFocus) notValid = required
   $: if (!required) {
     notValid = false
+    hadFocus = false
   }
 
   function handleInput(event) {

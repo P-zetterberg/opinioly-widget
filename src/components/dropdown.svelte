@@ -25,7 +25,7 @@
         label = "Required"
       } else {
         notValid = false
-        label = "Feedback category"
+        label = label
       }
       isOpen = false
     }
@@ -37,7 +37,7 @@
       label = "Required"
     } else {
       notValid = false
-      label = "Feedback category"
+      label = label
     }
     isOpen = !isOpen
   }

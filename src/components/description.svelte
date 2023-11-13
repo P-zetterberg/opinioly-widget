@@ -15,5 +15,6 @@
     font-size: 14px;
     text-align: left;
     letter-spacing: 0.05em;
+    word-wrap: anywhere;
   }
 </style>

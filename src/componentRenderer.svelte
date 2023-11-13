@@ -3,7 +3,7 @@
   import TextInput from "./components/textInput.svelte"
   import Description from "./components/description.svelte"
   import Dropdown from "./components/dropdown.svelte"
-  i
+
   export let type = ""
   export let msg = ""
   export let label = ""

@@ -2,10 +2,11 @@
   import { validationStatus, addKeyValuePair } from "../validationStore"
   import { updateData } from "../stores/widgetDataStore"
 
+  let hadFocus = false
   let notValid = false
   let value = ""
   $: updateData("textinput", { value, label })
-
+  $: if (hadFocus) notValid = required
   export let label = ""
   export let placeholder = ""
   export let required = false
@@ -16,17 +17,19 @@
     value = event.target.value
     notValid = value.length === 0
     addKeyValuePair(i, notValid)
+    hadFocus = true
   }
 
   function handleBlur() {
     if (!required) return
     notValid = value.length === 0
     addKeyValuePair(i, notValid)
+    hadFocus = true
   }
 </script>
 
 <div class="input__container">
-  <label for="name">{label}</label>
+  <label for="name">{label} {required ? "*" : ""}</label>
   <input
     on:blur={handleBlur}
     on:input={handleInput}

@@ -2,6 +2,7 @@
   import { validationStatus, addKeyValuePair } from "../validationStore"
   import { updateData } from "../stores/widgetDataStore"
 
+  let hadFocus = false
   let selectedOption = null
   let isOpen = false
   let notValid = false
@@ -13,8 +14,9 @@
 
   $: if (selectedOption !== null) addKeyValuePair(i, notValid)
   $: updateData("dropdown", { selectedOption, label })
-
+  $: if (hadFocus && !selectOption) notValid = required
   function handleBlur(e) {
+    hadFocus = true
     if (e.relatedTarget?.tagName.toLowerCase() == "li") {
       e.preventDefault()
     } else {
@@ -29,6 +31,7 @@
     }
   }
   function toggleDropdown() {
+    hadFocus = true
     if (required && isOpen && !selectedOption) {
       notValid = true
       label = "Required"
@@ -55,6 +58,7 @@
     on:blur={handleBlur}
   >
     {selectedOption || label}
+    {required ? "*" : ""}
     <span class="arrow">{isOpen ? "▲" : "▼"}</span>
   </div>
 

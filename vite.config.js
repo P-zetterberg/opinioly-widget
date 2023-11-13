@@ -10,6 +10,12 @@ export default defineConfig({
       fileName: "opinioly",
       formats: ["iife"],
     },
+    rollupOptions: {
+      output: {
+        entryFileNames: () => `opinioly.js`,
+        chunkFileNames: () => `opinioly.js`,
+      },
+    },
   },
   plugins: [
     svelte({

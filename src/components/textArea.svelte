@@ -1,7 +1,7 @@
 <script>
   import { validationStatus, addKeyValuePair } from "../validationStore"
   import { updateData } from "../stores/widgetDataStore"
-
+  let hadFocus = false
   let notValid = false
   let value = ""
   $: updateData("feedback", { value, label })
@@ -11,24 +11,26 @@
   export let i
 
   $: l = 250 - value.length
-
+  $: if (hadFocus) notValid = required
   function handleInput(event) {
     if (!required) return
     value = event.target.value
     notValid = value.length === 0
     addKeyValuePair(i, notValid)
+    hadFocus = true
   }
   //
   function handleBlur() {
     if (!required) return
     notValid = value.length === 0
     addKeyValuePair(i, notValid)
+    hadFocus = true
   }
 </script>
 
 <div class="input__container">
   <div class="flex">
-    <label for="feedback">{label ?? "Feedback"}</label>
+    <label for="feedback">{label ?? "Feedback"} {required ? "*" : ""}</label>
     <span class="max__length">{l}</span>
   </div>
   <textarea

@@ -9,36 +9,14 @@
   import Submit from "./components/button.svelte"
 
   export let widgetId
-  export let webData = JSON.stringify({
-    data: [
-      {
-        msg: "Vi på x AB värnar om våra kunder. feedback hjälper oss göra det ännu bättre!",
-        type: "description",
-      },
-      {
-        type: "dropdown",
-        label: "Feedback category12",
-        options: ["Design", "Experience", "Products", "Other"],
-        required: true,
-      },
-      {
-        type: "textinput",
-        label: "Name",
-        required: false,
-        placeholder: "Enter your name",
-      },
-      {
-        type: "textarea",
-        label: "Feedback",
-        required: false,
-      },
-    ],
-    buttonText: "Submit",
-  })
+  export let webData
   export let type = ""
   export function refreshData(newData, level) {
     if (level === 2) {
       wData = JSON.parse(newData).data
+      wData.forEach((item, i) => {
+        if (item.type !== "description") addKeyValuePair(i, item.required)
+      })
     } else {
       widget = newData
     }
@@ -196,11 +174,11 @@
     text-align: center;
     margin-top: 4px;
     display: block;
-    transition: background-color ease-in-out 150ms;
+    transition: color ease-in-out 200ms;
   }
 
   .branding-bar:hover {
-    background-color: rgb(238, 238, 238);
+    color: rgb(151, 151, 151);
   }
   .branding-bar p {
     margin: 0;

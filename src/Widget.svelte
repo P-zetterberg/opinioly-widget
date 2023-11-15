@@ -186,7 +186,7 @@
   }
   .toggle {
     all: unset;
-    position: absolute;
+    position: fixed;
     height: 25px;
     min-width: 25px;
     width: fit-content;

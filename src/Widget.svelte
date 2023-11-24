@@ -64,7 +64,7 @@
 <div class="container">
   <main class={toggle ? "open" : "closed"} part={type === "web" ? "main" : ""}>
     <div class="top-section">
-      <h1 class="title">Give feedback</h1>
+      <h1 class="title">{widget?.mainTitle}</h1>
     </div>
     <div class="content-container">
       <div class="content" style={loading ? "justify-content:center;" : ""}>
@@ -94,7 +94,7 @@
   <button
     class="toggle"
     on:click={type === "web" ? null : () => (toggle = !toggle)}
-    part={type === "web" ? "toggle" : ""}>Feedback</button
+    part={type === "web" ? "toggle" : ""}>{widget?.toggleText}</button
   >
 </div>
 
@@ -148,8 +148,11 @@
     box-shadow: rgba(0, 0, 0, 0.16) 0px 5px 40px;
     background-color: #f3f4f6;
     opacity: 1;
-    transition: width 200ms ease 0s, height 200ms ease 200ms,
-      max-height 200ms ease 0s, transform 300ms cubic-bezier(0, 1.2, 1, 1) 0s,
+    transition:
+      width 200ms ease 0s,
+      height 200ms ease 200ms,
+      max-height 200ms ease 0s,
+      transform 300ms cubic-bezier(0, 1.2, 1, 1) 0s,
       opacity 83ms ease-out 0s;
     pointer-events: all;
   }

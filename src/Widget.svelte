@@ -146,7 +146,7 @@
     max-height: 500px;
     overflow: hidden;
     box-shadow: rgba(0, 0, 0, 0.16) 0px 5px 40px;
-    background-color: #f3f4f6;
+    background-color: var(--background);
     opacity: 1;
     transition:
       width 200ms ease 0s,

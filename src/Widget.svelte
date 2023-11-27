@@ -113,7 +113,7 @@
     background-color: var(--primary-color, black);
   }
   .content-container {
-    overflow: scroll;
+    overflow-y: scroll;
     height: min(500px, 100% - 100px);
     min-height: 80px;
     max-height: 500px;

@@ -127,6 +127,7 @@
     overflow-y: auto;
     border-bottom-left-radius: var(--border-radius);
     border-bottom-right-radius: var(--border-radius);
+    box-shadow: 0 4px 4px -2px lightgrey;
   }
 
   .options li {

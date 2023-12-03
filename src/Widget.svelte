@@ -19,6 +19,7 @@
       })
     } else {
       widget = newData
+      baseData = newData
     }
   }
 
@@ -26,12 +27,14 @@
   let wData = []
   let toggle = true
   let loading = false
+  let baseData = {}
 
   async function getData(id) {
     if (type === "web") return
     const res = await fetch(`http://localhost:3000/widget/get?id=${id}`)
     widget = await res.json()
-    wData = JSON.parse(widget.data).data
+    wData = widget.data.data
+    baseData = widget.data
     loading = false
     wData.forEach((item, i) => {
       if (item.type !== "description") addKeyValuePair(i, item.required)
@@ -44,6 +47,7 @@
       let parsedData = JSON.parse(webData)
       widget = parsedData
       wData = parsedData.data
+      baseData = parsedData
       loading = false
       wData.forEach((item, i) => {
         if (item.type !== "description") addKeyValuePair(i, item.required)
@@ -64,7 +68,7 @@
 <div class="container">
   <main class={toggle ? "open" : "closed"} part={type === "web" ? "main" : ""}>
     <div class="top-section">
-      <h1 class="title">{widget?.mainTitle}</h1>
+      <h1 class="title">{baseData.mainTitle ?? ""}</h1>
     </div>
     <div class="content-container">
       <div class="content" style={loading ? "justify-content:center;" : ""}>
@@ -81,7 +85,7 @@
               {i}
             />
           {/each}
-          <Submit buttonText={widget?.buttonText} {widgetId} {type} />
+          <Submit buttonText={baseData.buttonText} {widgetId} {type} />
         {:else}
           <Loading />
         {/if}
@@ -94,7 +98,8 @@
   <button
     class="toggle"
     on:click={type === "web" ? null : () => (toggle = !toggle)}
-    part={type === "web" ? "toggle" : ""}>{widget?.toggleText}</button
+    part={type === "web" ? "toggle" : ""}
+    >{baseData.toggleText ?? "Toggle"}</button
   >
 </div>
 
@@ -113,7 +118,7 @@
     background-color: var(--primary-color, black);
   }
   .content-container {
-    overflow-y: scroll;
+    overflow-y: auto;
     height: min(500px, 100% - 100px);
     min-height: 80px;
     max-height: 500px;

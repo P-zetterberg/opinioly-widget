@@ -1,13 +1,16 @@
 <script>
   import { allValuesAreTrue } from "../validationStore"
-  import { feedback } from "../stores/widgetDataStore"
+  import { feedback, inputWasSent } from "../stores/widgetDataStore"
+  import Loading from "./loading.svelte"
 
   export let buttonText
   export let widgetId
   export let type
 
+  let loading = false
   function postData() {
     if (type === "web") return
+    loading = true
     const url = "http://localhost:3000/widget/feedback/new"
     const data = {
       widgetId: widgetId,
@@ -25,6 +28,8 @@
     })
       .then((response) => {
         if (response.ok) {
+          loading = false
+          $inputWasSent = true
           return response.json()
         } else {
           throw new Error("Request failed with status: " + response.status)
@@ -39,9 +44,15 @@
   }
 </script>
 
-<button disabled={$allValuesAreTrue} class="submit" on:click={postData}
-  >{buttonText ?? "Submit"}</button
->
+{#if loading}
+  <button class="submit loading" disabled={$allValuesAreTrue}>
+    <Loading small="small" />
+  </button>
+{:else}
+  <button disabled={$allValuesAreTrue} class="submit" on:click={postData}
+    >{buttonText ?? "Submit"}</button
+  >
+{/if}
 
 <style>
   * {
@@ -59,7 +70,9 @@
     letter-spacing: 0.2em;
     font-weight: 600;
     cursor: pointer;
-    transition: background-color ease-in 150ms, opacity ease-in 150ms;
+    transition:
+      background-color ease-in 150ms,
+      opacity ease-in 150ms;
     text-align: center;
     min-height: 45px;
     box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 10px;
@@ -75,6 +88,15 @@
     }
     &:active:not(:disabled) {
       scale: 1.02;
+    }
+  }
+  .loading {
+    display: flex;
+    justify-content: center;
+    opacity: 0.7;
+    cursor: wait;
+    &:hover {
+      opacity: 0.7;
     }
   }
 </style>

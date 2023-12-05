@@ -6,7 +6,9 @@
   import ComponentRenderer from "./componentRenderer.svelte"
   import Loading from "./components/loading.svelte"
   import { addKeyValuePair } from "./validationStore"
+  import { inputWasSent } from "./stores/widgetDataStore"
   import Submit from "./components/button.svelte"
+  import Success from "./components/success.svelte"
 
   export let widgetId
   export let webData
@@ -73,25 +75,29 @@
     <div class="content-container">
       <div class="content" style={loading ? "justify-content:center;" : ""}>
         {#if !loading}
-          <!-- Värt att göra spread här? om fler? -->
-          {#each wData as { type, msg, label, placeholder, options, required }, i}
-            <ComponentRenderer
-              {type}
-              {msg}
-              {label}
-              {placeholder}
-              {options}
-              {required}
-              {i}
-            />
-          {/each}
-          <Submit buttonText={baseData.buttonText} {widgetId} {type} />
+          {#if $inputWasSent}
+            <Success />
+          {:else}
+            <!-- Värt att göra spread här? om fler? -->
+            {#each wData as { type, msg, label, placeholder, options, required }, i}
+              <ComponentRenderer
+                {type}
+                {msg}
+                {label}
+                {placeholder}
+                {options}
+                {required}
+                {i}
+              />
+            {/each}
+            <Submit buttonText={baseData.buttonText} {widgetId} {type} />
+          {/if}
         {:else}
           <Loading />
         {/if}
       </div>
     </div>
-    <a href="http://example.com" class="branding-bar">
+    <a href="https://opinioly.io" class="branding-bar">
       <p>Powered by Opinioly</p>
     </a>
   </main>
@@ -119,15 +125,15 @@
   }
   .content-container {
     overflow-y: auto;
-    height: min(500px, 100% - 100px);
+    height: min(700px, 100% - 100px);
     min-height: 80px;
-    max-height: 500px;
+    max-height: 700px;
     max-width: 400px;
   }
   .content {
     padding: 1em;
     height: 100%;
-    max-height: 400px;
+    max-height: 600px;
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -141,14 +147,14 @@
 
   main {
     --_width: 400px;
-    z-index: 57678965;
+    z-index: 32000;
     position: fixed;
     inset: var(--top, auto) var(--right, auto) var(--bottom, auto)
       var(--left, auto);
     transform-origin: right bottom 0px;
     min-height: 80px;
     width: var(--_width);
-    max-height: 500px;
+    max-height: 700px;
     overflow: hidden;
     box-shadow: rgba(0, 0, 0, 0.16) 0px 5px 40px;
     background-color: var(--background);
@@ -168,6 +174,10 @@
     height: 0;
     max-height: 0;
     pointer-events: none;
+
+    .top-section {
+      width: 0;
+    }
   }
   .open {
     border-radius: var(--frame-radius);

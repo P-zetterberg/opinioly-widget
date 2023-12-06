@@ -127,13 +127,13 @@
     overflow-y: auto;
     height: min(700px, 100% - 100px);
     min-height: 80px;
-    max-height: 700px;
+    max-height: 800px;
     max-width: 400px;
   }
   .content {
     padding: 1em;
     height: 100%;
-    max-height: 600px;
+    max-height: 700px;
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -154,7 +154,7 @@
     transform-origin: right bottom 0px;
     min-height: 80px;
     width: var(--_width);
-    max-height: 700px;
+    max-height: 800px;
     overflow: hidden;
     box-shadow: rgba(0, 0, 0, 0.16) 0px 5px 40px;
     background-color: var(--background);

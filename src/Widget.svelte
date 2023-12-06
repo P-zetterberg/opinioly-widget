@@ -233,6 +233,10 @@
     main {
       width: 100vw;
       right: 0;
+      max-height: 500px;
+    }
+    .content {
+      max-height: 400px;
     }
   }
 </style>
